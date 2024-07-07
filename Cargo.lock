@@ -1778,13 +1778,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8566979429cf69b49a5c740c60791108e86440e8be149bbea4fe54d2c32d6e2"
 
 [[package]]
-name = "dead-money-bevy-ext"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "dead-money-quill-widgets"
 version = "0.1.0"
 dependencies = [
@@ -1793,7 +1786,6 @@ dependencies = [
  "bevy_mod_stylebuilder",
  "bevy_quill",
  "bevy_quill_obsidian",
- "dead-money-bevy-ext",
  "memory-stats",
  "version",
 ]

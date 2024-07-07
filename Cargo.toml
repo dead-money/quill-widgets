@@ -34,7 +34,7 @@ bevy_quill_obsidian = { git = "https://github.com/dead-money/quill.git", package
 bevy_mod_stylebuilder = { git = "https://github.com/dead-money/quill.git", package = "bevy_mod_stylebuilder" }
 
 ## Dead Money
-dead-money-bevy-ext = { path = "../bevy-ext" }
+# dead-money-bevy-ext = { path = "../bevy-ext" }
 
 ## OS
 version = "3.0"
