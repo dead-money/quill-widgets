@@ -2,12 +2,12 @@ name: Code
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
     paths-ignore:
       - "assets/**"
       - ".github/workflows/**"
   pull_request:
-    branches: ["main"]
+    branches: ["master"]
     paths-ignore:
       - "assets/**"
       - ".github/workflows/**"
