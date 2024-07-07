@@ -2,7 +2,7 @@ use super::*;
 use crate::imports::*;
 use bevy::diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin};
 
-#[derive(Component, Copy, Clone, PartialEq, Default)]
+#[derive(Component, Clone, PartialEq, Default)]
 pub struct EntityDiagnosticState {
     entity_count: f64,
 }

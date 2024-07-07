@@ -4,7 +4,7 @@ use bevy::{prelude::*, ui};
 use bevy_mod_picking::prelude::*;
 use bevy_mod_stylebuilder::*;
 use bevy_quill::*;
-use bevy_quill_obsidian::ObsidianUiPlugin;
+use bevy_quill_obsidian::{colors, ObsidianUiPlugin};
 
 use dead_money_quill_widgets::{prelude::*, DeadMoneyQuillWidgetsPlugin};
 
@@ -50,6 +50,7 @@ impl ViewTemplate for DiagnosticsDemo {
                 diag::FpsDiagnostic::new(),
                 diag::MemDiagnostic::new(),
                 diag::EntityDiagnostic::new(),
+                diag::Version::new(),
             ))
     }
 }
@@ -58,14 +59,13 @@ fn style_test(ss: &mut StyleBuilder) {
     ss.display(Display::Flex)
         .flex_direction(FlexDirection::Column)
         .position(ui::PositionType::Absolute)
-        // .padding(3)
-        // .left(0)
-        // .right(0)
-        // .top(0)
-        // .bottom(0)
-        // .row_gap(4)
-        // .background_color(colors::U2)
-        ;
+        .right(10.0)
+        .bottom(10.0)
+        .padding(4.0)
+        .background_color(colors::BACKGROUND)
+        .border_color(colors::FOREGROUND)
+        .border(1.0)
+        .border_radius(8.0);
 }
 
 fn _style_row(ss: &mut StyleBuilder) {

@@ -2,12 +2,14 @@ mod entity;
 mod fps;
 mod mem;
 mod update;
+mod ver;
 
 use bevy::diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin};
 
 pub use entity::*;
 pub use fps::*;
 pub use mem::*;
+pub use ver::*;
 
 use crate::imports::*;
 
@@ -20,7 +22,7 @@ pub(super) fn plugin(app: &mut App) {
         ));
 }
 
-pub trait DiagnosticView: Component + Copy + Clone + PartialEq + Default + fmt::Display {
+pub trait DiagnosticView: Component + Clone + PartialEq + Default + fmt::Display {
     const LABEL: &'static str;
 
     fn update(&mut self, cx: &mut Cx);
@@ -104,32 +106,25 @@ impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
     }
 }
 
-// TODO:
-// Add a diagnostic popup (optional).
-// Add more diagnostics.
-
-fn style_diagnostic(ss: &mut StyleBuilder) {
-    ss.display(ui::Display::Flex)
+fn style_diagnostic(sb: &mut StyleBuilder) {
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::Center)
-        .align_items(ui::AlignItems::Center)
-        .align_content(ui::AlignContent::Center)
         .gap(4)
         .color(colors::FOREGROUND);
 }
 
-fn style_diagnostic_label(ss: &mut StyleBuilder) {
-    ss.display(ui::Display::Flex)
+fn style_diagnostic_label(sb: &mut StyleBuilder) {
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::FlexStart)
-        .align_items(ui::AlignItems::Center)
+        .width(32.0)
         .color(colors::FOREGROUND);
 }
 
 fn style_diagnostic_value(sb: &mut StyleBuilder) {
-    sb.display(ui::Display::Flex)
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::FlexStart)
-        .align_items(ui::AlignItems::Center)
         .color(colors::Y_GREEN);
 }
