@@ -1,1 +1,15 @@
-/target
+target/
+stage/
+out/
+
+**/*.rs.bk
+
+**/*.tiled-session
+
+.VSCodeCounter/
+
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf**
+.idea/copilot
+*.iml
