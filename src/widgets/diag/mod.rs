@@ -1,13 +1,13 @@
+mod entity;
 mod fps;
 mod mem;
 mod update;
-mod entity;
 
 use bevy::diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin};
 
+pub use entity::*;
 pub use fps::*;
 pub use mem::*;
-pub use entity::*;
 
 use crate::imports::*;
 
@@ -107,7 +107,6 @@ impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
 // TODO:
 // Add a diagnostic popup (optional).
 // Add more diagnostics.
-// Use obsidian colors (for fps, just red when below a configurable threshold).
 
 fn style_diagnostic(ss: &mut StyleBuilder) {
     ss.display(ui::Display::Flex)
