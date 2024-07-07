@@ -2,12 +2,12 @@ name: Assets
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
     paths:
       - "game/app/assets/**"
       - ".github/workflows/**"
   pull_request:
-    branches: ["main"]
+    branches: ["master"]
     paths:
       - "game/app/assets/**"
       - ".github/workflows/**"

@@ -6,6 +6,7 @@ authors = ["Dead Money LLC <brandon@deadmoney.gg>"]
 homepage = "https://deadmoney.gg/"
 repository = ""
 edition = "2021"
+license = "MIT OR Apache-2.0"
 categories = ["games", "game-development"]
 keywords = ["bevy"]
 
