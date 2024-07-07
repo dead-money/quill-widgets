@@ -46,7 +46,11 @@ impl ViewTemplate for DiagnosticsDemo {
         Element::<NodeBundle>::new()
             .insert_dyn(TargetCamera, self.camera)
             .style(style_test)
-            .children((diag::FpsDiagnostic::new(), diag::MemDiagnostic::new()))
+            .children((
+                diag::FpsDiagnostic::new(),
+                diag::MemDiagnostic::new(),
+                diag::EntityDiagnostic::new(),
+            ))
     }
 }
 
@@ -64,7 +68,7 @@ fn style_test(ss: &mut StyleBuilder) {
         ;
 }
 
-fn style_row(ss: &mut StyleBuilder) {
+fn _style_row(ss: &mut StyleBuilder) {
     ss.display(Display::Flex)
         .flex_direction(FlexDirection::Row)
         .align_items(ui::AlignItems::Center)

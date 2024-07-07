@@ -1,59 +1,112 @@
 mod fps;
 mod mem;
+mod update;
+mod entity;
 
-use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
-use std::time::Duration;
+use bevy::diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin};
 
 pub use fps::*;
 pub use mem::*;
+pub use entity::*;
 
 use crate::imports::*;
 
 pub(super) fn plugin(app: &mut App) {
     app //
-        .add_plugins(FrameTimeDiagnosticsPlugin)
-        .init_resource::<DiagnosticUpdate>()
-        .add_systems(Update, update.run_if(should_update_diagnostics));
+        .add_plugins((
+            FrameTimeDiagnosticsPlugin,
+            EntityCountDiagnosticsPlugin,
+            update::plugin,
+        ));
 }
 
-#[derive(Resource, Clone, PartialEq)]
-struct DiagnosticUpdate {
-    pub rate: f32,
-    t: f32,
-}
+pub trait DiagnosticView: Component + Copy + Clone + PartialEq + Default {
+    const LABEL: &'static str;
 
-impl Default for DiagnosticUpdate {
-    fn default() -> Self {
-        Self { rate: 1.0, t: 0.0 }
+    fn update(&mut self, cx: &mut Cx);
+
+    fn format(&self) -> String;
+
+    fn color(&self) -> Srgba {
+        colors::Y_GREEN
     }
 }
 
-fn should_update_diagnostics(
-    mut timer: Local<Duration>,
-    diagnostic_update: Res<DiagnosticUpdate>,
-    time: Res<Time<Real>>,
-) -> bool {
-    let delta = time.delta();
-    if delta > *timer {
-        *timer = Duration::from_secs(0);
-    } else {
-        *timer -= delta;
+#[derive(Default, Clone, PartialEq)]
+pub struct DiagnosticWidget<T: DiagnosticView> {
+    pub style: StyleHandle,
+    _phantom: std::marker::PhantomData<T>,
+}
+
+impl<T: DiagnosticView> DiagnosticWidget<T> {
+    pub fn new() -> Self {
+        Self::default()
     }
 
-    if timer.as_secs_f32() == 0.0 {
-        *timer = Duration::from_secs_f32(diagnostic_update.rate);
-        true
-    } else {
-        false
+    pub fn style<S: StyleTuple + 'static>(mut self, style: S) -> Self {
+        self.style = style.into_handle();
+        self
     }
 }
 
-fn update(mut diagnostic_update: ResMut<DiagnosticUpdate>) {
-    diagnostic_update.t += diagnostic_update.rate;
+impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
+    type View = impl View;
+
+    fn create(&self, cx: &mut Cx) -> Self::View {
+        let id = cx.create_entity();
+
+        let mut entity = cx.world_mut().entity_mut(id);
+        if !entity.contains::<T>() {
+            entity.insert(T::default());
+        }
+
+        let state = cx.use_component::<T>(id).unwrap();
+        let update = cx.use_resource::<update::DiagnosticUpdate>();
+        let color = state.color();
+
+        Element::<NodeBundle>::for_entity(id)
+            .named(T::LABEL)
+            .style((
+                typography::text_default,
+                style_diagnostic,
+                self.style.clone(),
+            ))
+            .effect(
+                // If the update resource is ticked, update the widget state.
+                // For example, we might read the current memory utilization at the update rate.
+                move |cx, ent, _| {
+                    // Take and replace to avoid borrowing issues.
+                    let mut ent_mut = cx.world_mut().entity_mut(ent);
+                    let mut state = ent_mut.take::<T>().unwrap();
+                    state.update(cx);
+
+                    let mut ent_mut = cx.world_mut().entity_mut(ent);
+                    ent_mut.insert(state);
+                },
+                update.t,
+            )
+            .children((
+                Element::<NodeBundle>::new()
+                    .named(&format!("{}::Label", T::LABEL))
+                    .style(style_diagnostic_label)
+                    .children(format!("{}:", T::LABEL)),
+                Element::<NodeBundle>::new()
+                    .named(&format!("{}::Counter", T::LABEL))
+                    .style(style_diagnostic_value)
+                    .style_dyn(
+                        // Allow the state to change the value's color.
+                        // This is useful for the FPS counter, which turns red when the FPS is below a threshold.
+                        |(_t, color), sb| {
+                            sb.color(color);
+                        },
+                        (update.t, color),
+                    )
+                    .children(state.format()),
+            ))
+    }
 }
 
 // TODO:
-// Generalize all diagnostic widgets code.
 // Add a diagnostic popup (optional).
 // Add more diagnostics.
 // Use obsidian colors (for fps, just red when below a configurable threshold).
