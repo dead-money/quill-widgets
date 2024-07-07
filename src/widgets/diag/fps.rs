@@ -27,16 +27,18 @@ impl DiagnosticView for FpsDiagnosticState {
         }
     }
 
-    fn format(&self) -> String {
-        format!("{:3.0}", self.smoothed_fps)
-    }
-
     fn color(&self) -> Srgba {
         if self.smoothed_fps > self.threshold {
             colors::Y_GREEN
         } else {
             colors::X_RED
         }
+    }
+}
+
+impl fmt::Display for FpsDiagnosticState {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:3.0}", self.smoothed_fps)
     }
 }
 

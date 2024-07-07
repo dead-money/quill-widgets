@@ -20,12 +20,10 @@ pub(super) fn plugin(app: &mut App) {
         ));
 }
 
-pub trait DiagnosticView: Component + Copy + Clone + PartialEq + Default {
+pub trait DiagnosticView: Component + Copy + Clone + PartialEq + Default + fmt::Display {
     const LABEL: &'static str;
 
     fn update(&mut self, cx: &mut Cx);
-
-    fn format(&self) -> String;
 
     fn color(&self) -> Srgba {
         colors::Y_GREEN
@@ -101,7 +99,7 @@ impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
                         },
                         (update.t, color),
                     )
-                    .children(state.format()),
+                    .children(state.to_string()),
             ))
     }
 }

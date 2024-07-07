@@ -15,9 +15,11 @@ impl DiagnosticView for MemDiagnosticState {
             self.usage = usage.physical_mem as f32 / 1024.0 / 1024.0;
         }
     }
+}
 
-    fn format(&self) -> String {
-        format!("{:.2}", self.usage)
+impl fmt::Display for MemDiagnosticState {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:.2}", self.usage)
     }
 }
 

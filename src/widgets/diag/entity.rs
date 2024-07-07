@@ -23,9 +23,11 @@ impl DiagnosticView for EntityDiagnosticState {
 
         self.entity_count = entity_count;
     }
+}
 
-    fn format(&self) -> String {
-        format!("{}", self.entity_count)
+impl fmt::Display for EntityDiagnosticState {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.entity_count)
     }
 }
 

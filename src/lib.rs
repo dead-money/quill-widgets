@@ -12,6 +12,7 @@ pub mod prelude {
 
 pub mod imports {
     // Standard Library
+    pub(crate) use std::fmt;
     // pub(crate) use std::collections::VecDeque;
     // pub(crate) use std::marker::PhantomData;
     // pub(crate) use std::path::{Path, PathBuf};
