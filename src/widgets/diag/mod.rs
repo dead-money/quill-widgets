@@ -2,12 +2,14 @@ mod entity;
 mod fps;
 mod mem;
 mod update;
+mod ver;
 
 use bevy::diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin};
 
 pub use entity::*;
 pub use fps::*;
 pub use mem::*;
+pub use ver::*;
 
 use crate::imports::*;
 
@@ -20,7 +22,7 @@ pub(super) fn plugin(app: &mut App) {
         ));
 }
 
-pub trait DiagnosticView: Component + Copy + Clone + PartialEq + Default + fmt::Display {
+pub trait DiagnosticView: Component + Clone + PartialEq + Default + fmt::Display {
     const LABEL: &'static str;
 
     fn update(&mut self, cx: &mut Cx);

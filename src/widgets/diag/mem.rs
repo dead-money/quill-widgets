@@ -2,7 +2,7 @@ use super::*;
 use crate::imports::*;
 use memory_stats::memory_stats;
 
-#[derive(Component, Copy, Clone, PartialEq, Default)]
+#[derive(Component, Clone, PartialEq, Default)]
 pub struct MemDiagnosticState {
     usage: f32,
 }

@@ -50,6 +50,7 @@ impl ViewTemplate for DiagnosticsDemo {
                 diag::FpsDiagnostic::new(),
                 diag::MemDiagnostic::new(),
                 diag::EntityDiagnostic::new(),
+                diag::Version::new(),
             ))
     }
 }

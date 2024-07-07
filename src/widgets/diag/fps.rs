@@ -2,7 +2,7 @@ use super::*;
 use crate::imports::*;
 use bevy::diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin};
 
-#[derive(Component, Copy, Clone, PartialEq)]
+#[derive(Component, Clone, PartialEq)]
 pub struct FpsDiagnosticState {
     smoothed_fps: f64,
     threshold: f64,
