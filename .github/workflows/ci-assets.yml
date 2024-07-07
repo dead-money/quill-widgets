@@ -1,0 +1,20 @@
+name: Assets
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "game/app/assets/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "game/app/assets/**"
+      - ".github/workflows/**"
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: 'echo "Skipping: No code build required."'

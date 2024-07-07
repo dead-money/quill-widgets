@@ -1,0 +1,63 @@
+name: Code
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "assets/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches: ["main"]
+    paths-ignore:
+      - "assets/**"
+      - ".github/workflows/**"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Configure Shared Compilation Cache
+        run: |
+          echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
+
+      - name: Run Shared Compilation Cache
+        uses: mozilla-actions/sccache-action@v0.0.3
+
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
+
+      - name: Check Formatting
+        working-directory: .
+        run: cargo fmt --all -- --check
+
+      - name: Check Lints
+        working-directory: .
+        run: cargo clippy -- --deny warnings
+
+      - name: Generate Docs
+        working-directory: .
+        run: cargo doc --workspace --all-features --no-deps --document-private-items
+
+      - name: Build Game
+        working-directory: .
+        run: cargo build --verbose
+
+      # - name: Run Test Suites
+      #   working-directory: .
+      #   run: cargo test --verbose
