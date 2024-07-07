@@ -94,10 +94,10 @@ impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
                     .style_dyn(
                         // Allow the state to change the value's color.
                         // This is useful for the FPS counter, which turns red when the FPS is below a threshold.
-                        |(_t, color), sb| {
+                        |color, sb| {
                             sb.color(color);
                         },
-                        (update.t, color),
+                        color,
                     )
                     .children(state.to_string()),
             ))
