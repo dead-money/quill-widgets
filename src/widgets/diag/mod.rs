@@ -106,32 +106,25 @@ impl<T: DiagnosticView> ViewTemplate for DiagnosticWidget<T> {
     }
 }
 
-// TODO:
-// Add a diagnostic popup (optional).
-// Add more diagnostics.
-
-fn style_diagnostic(ss: &mut StyleBuilder) {
-    ss.display(ui::Display::Flex)
+fn style_diagnostic(sb: &mut StyleBuilder) {
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::Center)
-        .align_items(ui::AlignItems::Center)
-        .align_content(ui::AlignContent::Center)
         .gap(4)
         .color(colors::FOREGROUND);
 }
 
-fn style_diagnostic_label(ss: &mut StyleBuilder) {
-    ss.display(ui::Display::Flex)
+fn style_diagnostic_label(sb: &mut StyleBuilder) {
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::FlexStart)
-        .align_items(ui::AlignItems::Center)
+        .width(32.0)
         .color(colors::FOREGROUND);
 }
 
 fn style_diagnostic_value(sb: &mut StyleBuilder) {
-    sb.display(ui::Display::Flex)
+    sb //
+        .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .justify_content(ui::JustifyContent::FlexStart)
-        .align_items(ui::AlignItems::Center)
         .color(colors::Y_GREEN);
 }
