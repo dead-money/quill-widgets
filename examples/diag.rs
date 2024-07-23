@@ -17,8 +17,9 @@ fn main() {
             ObsidianUiPlugin,
             DeadMoneyQuillWidgetsPlugin,
         ))
+        .init_state::<TestState>()
         .add_systems(Startup, setup_demo)
-        .add_systems(Update, close_on_esc)
+        .add_systems(Update, (change_state, close_on_esc))
         .run();
 }
 
@@ -51,6 +52,7 @@ impl ViewTemplate for DiagnosticsDemo {
                 diag::MemDiagnostic::new(),
                 diag::EntityDiagnostic::new(),
                 diag::Version::new(),
+                ecs::StateWatcher::<TestState>::new(),
             ))
     }
 }
@@ -76,8 +78,44 @@ fn _style_row(ss: &mut StyleBuilder) {
         .column_gap(4);
 }
 
-pub fn close_on_esc(input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
+fn close_on_esc(input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
     if input.just_pressed(KeyCode::Escape) {
         exit.send(AppExit::Success);
+    }
+}
+
+#[derive(States, Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum TestState {
+    #[default]
+    Menu,
+    Pause,
+    Game,
+}
+
+impl std::fmt::Display for TestState {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let state_string = match self {
+            TestState::Menu => "menu",
+            TestState::Pause => "pause",
+            TestState::Game => "game",
+        };
+
+        write!(f, "{}", state_string)
+    }
+}
+
+fn change_state(
+    current_state: Res<State<TestState>>,
+    mut next_state: ResMut<NextState<TestState>>,
+    mut count: Local<u32>,
+) {
+    *count += 1;
+    if *count == 1000 {
+        *count = 0;
+        if *current_state == TestState::Menu {
+            next_state.set(TestState::Game);
+        } else {
+            next_state.set(TestState::Menu);
+        }
     }
 }
