@@ -118,7 +118,6 @@ fn style_diagnostic_label(sb: &mut StyleBuilder) {
     sb //
         .display(ui::Display::Flex)
         .flex_direction(ui::FlexDirection::Row)
-        .width(32.0)
         .color(colors::FOREGROUND);
 }
 

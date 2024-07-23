@@ -3,7 +3,7 @@
 mod widgets;
 
 pub mod prelude {
-    pub use crate::widgets::*;
+    pub use crate::widgets::diag;
 }
 
 pub mod imports {

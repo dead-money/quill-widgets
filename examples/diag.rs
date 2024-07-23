@@ -57,11 +57,12 @@ impl ViewTemplate for DiagnosticsDemo {
 
 fn style_test(ss: &mut StyleBuilder) {
     ss.display(Display::Flex)
-        .flex_direction(FlexDirection::Column)
+        .flex_direction(FlexDirection::Row)
         .position(ui::PositionType::Absolute)
         .right(10.0)
         .bottom(10.0)
         .padding(4.0)
+        .column_gap(12.0)
         .background_color(colors::BACKGROUND)
         .border_color(colors::FOREGROUND)
         .border(1.0)
